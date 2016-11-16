@@ -1,0 +1,4 @@
+We code in Python 3.
+Variable names are in English.
+Variables are assigned like this: variableName
+Information in GitHub is in English as well.
