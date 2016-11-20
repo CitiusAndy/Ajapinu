@@ -16,15 +16,34 @@ appDisplay.fill(WHITE)
 text = "00.00"
 timeFont = pygame.font.SysFont("Arial", 72)
 textPicture = timeFont.render(text, False, BLACK)
-appDisplay.blit(textPicture, (350, 250))
+appDisplay.blit(textPicture, (displayWidth/2-72, displayHeight/2-72))
+
+def displayTime(textPicture):
+    appDisplay.blit(textPicture, (displayWidth/2-72, displayHeight/2-72))
 
 
-pygame.display.flip()
-
+beginTime=0
+timerRunning=False
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             break
+        if event.type == pygame.KEYDOWN:
+            if event.key==pygame.K_SPACE and not timerRunning:
+                print("YES")
+                beginTime=time()
+                timerRunning=True
+            if event.key==pygame.K_SPACE and timerRunning:
+                endTime=time()
+                timerRunning=False
+                
+    if beginTime!=0:
+        text=str(round(time()-beginTime, 2))
+    textPicture=timeFont.render(text, False, BLACK)
+    appDisplay.fill(WHITE)
+    displayTime(textPicture)
+    pygame.display.update()
+    clock.tick(60)
 
 pygame.quit()
     
