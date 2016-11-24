@@ -16,7 +16,7 @@ appDisplay.fill(WHITE)
 def displayTime(text):
     text=str(text)
     timeFont = pygame.font.SysFont("Arial", 72)
-    textPicture = timeFont.render(text, False, BLACK)
+    textPicture = timeFont.render(text, False, BLACK, WHITE)
     appDisplay.blit(textPicture, (displayWidth/2-72, displayHeight/2-72))
 
 solveTime="0.00"
@@ -27,6 +27,7 @@ timerRunning=False
 beginTime=0
 times=[]
 solves=0
+appDisplay.fill(WHITE)
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -46,7 +47,7 @@ while True:
         if len(times)!=solves:
             times.append(float(solveTime))
     
-    appDisplay.fill(WHITE)
+
     displayTime(solveTime)
     pygame.display.update()
     clock.tick(60)
