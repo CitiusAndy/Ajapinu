@@ -20,3 +20,6 @@ def calculateAverage(times):
         times.remove(worst)
         
         return round(sum(times)/(length-2), 2), best, worst
+
+def calculateMean(times):
+    return sum(times)/len(times)
