@@ -15,6 +15,6 @@ def generate3x3Scramble(scrambleLength):
         
         scramble.append(moves[randomMove]+degrees[randomDegree])
 
-    return " ".join(scramble)
+    return scramble
 
 print(generate3x3Scramble(20))
