@@ -121,7 +121,7 @@ def scrambleCube(scramble):
             R(move[1])
         elif move[0] == "L":
             L(move[1])
-        elif move[0] = "D":
+        elif move[0] == "D":
             D(move[1])
         elif move[0] == "B":
             B(move[1])            
