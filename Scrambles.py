@@ -17,4 +17,4 @@ def generate3x3Scramble(scrambleLength):
 
     return scramble
 
-print(generate3x3Scramble(20))
+scramble=(generate3x3Scramble(20))

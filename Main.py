@@ -19,6 +19,8 @@ def displayTime(text):
     textPicture = timeFont.render(text, False, BLACK, WHITE)
     appDisplay.blit(textPicture, (displayWidth/2-72, displayHeight/2-72))
 
+
+
 solveTime="0.00"
 displayTime(solveTime)
 
@@ -31,7 +33,8 @@ appDisplay.fill(WHITE)
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            break
+            pygame.quit()
+            quit()
         if event.type == pygame.KEYDOWN:
             if event.key==pygame.K_SPACE and not timerRunning:
                 beginTime=time()
@@ -47,12 +50,11 @@ while True:
         if len(times)!=solves:
             times.append(float(solveTime))
     
-
     displayTime(solveTime)
     pygame.display.update()
     clock.tick(60)
 
-quit()
 
+quit()
 pygame.quit()
     
