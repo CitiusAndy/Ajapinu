@@ -1,4 +1,4 @@
-import pygame,builtins
+import pygame
 from time import time
 from Scrambles import generate3x3Scramble
 
