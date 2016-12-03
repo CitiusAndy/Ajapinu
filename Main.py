@@ -1,6 +1,7 @@
 import pygame
 from time import time
 from Scrambles import generate3x3Scramble
+from Averages import calculateAverage, calculateMean, calculateBest, calculateWorst
 
 pygame.init()
 
@@ -20,7 +21,7 @@ clock=pygame.time.Clock()
 appDisplay.fill(WHITE)
 
 def displayTime(text):
-    text=str(text)
+    text = str(text)
     timeFont = pygame.font.SysFont("Arial", 72)
     textPicture = timeFont.render(text, False, BLACK, WHITE)
     appDisplay.blit(textPicture, (displayWidth/2-72, displayHeight/2-72))
@@ -32,7 +33,43 @@ def displayScramble(scramble): #displays the current scramble on the screen
     text = "Scramble:" + text
     scrambleFont = pygame.font.SysFont("Arial",25)
     scramblePicture = scrambleFont.render(text, False, BLACK, WHITE)
-    appDisplay.blit(scramblePicture, (20,200))
+    appDisplay.blit(scramblePicture, (20,30))
+
+def displaySolveNumber(text):
+    text = "Solves: " + str(text)
+    solveNumberFont = pygame.font.SysFont("Arial", 30)
+    solveNumberPicture = solveNumberFont.render(text, False, BLACK, WHITE)
+    appDisplay.blit(solveNumberPicture, (900,30))
+
+def displayBest(text):
+    text = "Best:   " + str(text)
+    bestFont = pygame.font.SysFont("Arial", 30)
+    bestPicture = bestFont.render(text, False, BLACK, WHITE)
+    appDisplay.blit(bestPicture, (900,60))
+
+def displayWorst(text):
+    text = "Worst: " + str(text)
+    worstFont = pygame.font.SysFont("Arial", 30)
+    worstPicture = worstFont.render(text, False, BLACK, WHITE)
+    appDisplay.blit(worstPicture, (900,90))
+
+def displayMean(text):
+    text = "Mean: " + str(text)
+    meanFont = pygame.font.SysFont("Arial", 30)
+    meanPicture = meanFont.render(text, False, BLACK, WHITE)
+    appDisplay.blit(meanPicture, (900, 120))
+    
+def displayAo5(text):
+    text = "Average of 5: " + str(text)
+    ao5Font = pygame.font.SysFont("Arial", 30)
+    ao5Picture = ao5Font.render(text, False, BLACK, WHITE)
+    appDisplay.blit(ao5Picture, (900, 150))
+
+def displayAo12(text):
+    text = "Average of 12: " + str(text)
+    ao12Font = pygame.font.SysFont("Arial", 30)
+    ao12Picture = ao12Font.render(text, False, BLACK, WHITE)
+    appDisplay.blit(ao12Picture, (900, 185))
 
 def getColour(sticker): ##returns the color of the sticker being looked at    
     if sticker == "g":
@@ -197,12 +234,18 @@ def scrambleCube(scramble):
 
 solveTime="0.00"
 displayTime(solveTime)
+
 scramble = generate3x3Scramble(25)
 displayScramble(scramble)
 
 front,up,right,left,down,back = getCube()
 scrambleCube(scramble)
 drawCube(100,300,30)
+
+displaySolveNumber("")
+displayBest("")
+displayWorst("")
+displayMean("")
 
 timerRunning=False
 beginTime=0
@@ -227,14 +270,28 @@ while True:
 
     if not timerRunning and beginTime!=0:
         if len(times)!=solves:
+            appDisplay.fill(WHITE)
             times.append(float(solveTime))
+            
             scramble = generate3x3Scramble(25)
             displayScramble(scramble)
+            
             front,up,right,left,down,back = getCube()
             scrambleCube(scramble)
             drawCube(100,300,30)
+
+            displaySolveNumber(solves)
+            displayBest(calculateBest(times))
+            displayWorst(calculateWorst(times))
+            displayMean(calculateMean(times))
+
+            if len(times)>=5:
+                displayAo5(calculateAverage(times, solves-5, solves))
+            if len(times)>=12:
+                displayAo12(calculateAverage(times, solves-12, solves))
             
     displayTime(solveTime)
+
     pygame.display.update()
     clock.tick(60)
 
