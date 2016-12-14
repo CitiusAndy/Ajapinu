@@ -176,6 +176,12 @@ while True:
             if event.key==pygame.K_BACKSPACE and previousScramble != "":
                 displayPreviousScramble=True
 
+            #For cancelling a solve in progress 
+            if event.key==pygame.K_ESCAPE and timerRunning:
+                timerRunning=False
+                solves-=1
+                solveTime="0.00"
+
     #Updating the solving time
     if timerRunning:
         solveTime="%.2f" % round(time()-beginTime, 2)
@@ -229,3 +235,4 @@ while True:
 pygame.quit()
 quit()
    
+
