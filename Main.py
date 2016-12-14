@@ -22,7 +22,7 @@ def displayTimer(solveTime):
     Args: solvetime
     Returns: displays the solve time
     """
-    solveTime = str(solveTime)
+    solveTime = str(solveTime)+"     "
     timeFont = pygame.font.SysFont("Arial", 72)
     textPicture = timeFont.render(solveTime, False, BLACK, WHITE)
     appDisplay.blit(textPicture, (displayWidth/2-72, displayHeight/2-72))
