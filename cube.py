@@ -107,7 +107,9 @@ def B(i): #defines the movement of the back layer
         B("1");B("1");B("1")
 
 
-def scrambleCube(scramble):
+def scrambleCube(scramble,cube):
+    global front,up,right,left,down,back
+    front,up,right,left,down,back = cube[0],cube[1],cube[2],cube[3],cube[4],cube[5]
     for move in scramble:
         
         if len(move) == 1:
@@ -125,3 +127,4 @@ def scrambleCube(scramble):
             D(move[1])
         elif move[0] == "B":
             B(move[1])            
+
