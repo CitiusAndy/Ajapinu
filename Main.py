@@ -3,6 +3,7 @@ import pygame
 from time import time
 from Averages import calculateAverage, calculateMean, calculateBest, calculateWorst
 from Cube import *
+
 #Constants
 displayWidth=1200
 displayHeight=800
@@ -13,7 +14,6 @@ GREEN=(0,255,0)
 BLUE=(0,0,255)
 YELLOW=(255,255,0)
 ORANGE=(255,128,0)
-
 
 #Displaying functions
 def displayTimer(solveTime):
@@ -203,8 +203,6 @@ while True:
             previousScramble = scramble
             scramble = generate3x3Scramble(22)
             displayScramble(scramble)
-
-
             
             #New cube picture displaying
             front,up,right,left,down,back = getCube()
@@ -234,5 +232,3 @@ while True:
     
 pygame.quit()
 quit()
-   
-

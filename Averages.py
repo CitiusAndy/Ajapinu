@@ -1,4 +1,5 @@
-def calculateAverage(times, startIndex, endIndex): #WCA-style average calculator
+#Consists of statistical calculations functions
+def calculateAverage(times, startIndex, endIndex):
     """
     Calculates WCA-style averages. Can be used to select specific interval of times from the time list.
 
@@ -32,7 +33,7 @@ def calculateAverage(times, startIndex, endIndex): #WCA-style average calculator
         
     return "%.2f" % round(sum(times)/(length-2), 2)
 
-def calculateMean(times): #Standard arithmetic mean
+def calculateMean(times):
     """
     Calculates arithmetic mean.
     Args:
