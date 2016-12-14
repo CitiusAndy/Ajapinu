@@ -1,10 +1,8 @@
 #Import statements
 import pygame
 from time import time
-from Scrambles import generate3x3Scramble
 from Averages import calculateAverage, calculateMean, calculateBest, calculateWorst
-from cube import *
-
+from Cube import *
 #Constants
 displayWidth=1200
 displayHeight=800
@@ -231,4 +229,3 @@ while True:
 pygame.quit()
 quit()
    
-
