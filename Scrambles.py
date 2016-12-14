@@ -1,5 +1,13 @@
 from random import randint
+
 def generate3x3Scramble(scrambleLength):
+    """
+    Generates WCA-style scramble with given scramble length.
+    Args:
+        scrambleLength: an integer of how long scramble is needed
+    Returns:
+        a list of the generated scramble
+    """
     moves="UDFBLR"
     degrees=["", "'", "2"]
     scramble=[]
@@ -16,5 +24,3 @@ def generate3x3Scramble(scrambleLength):
         scramble.append(moves[randomMove]+degrees[randomDegree])
 
     return scramble
-
-scramble=(generate3x3Scramble(20))

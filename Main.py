@@ -1,10 +1,10 @@
+#Import statements
 import pygame
 from time import time
 from Scrambles import generate3x3Scramble
 from Averages import calculateAverage, calculateMean, calculateBest, calculateWorst
 
-pygame.init()
-
+#Constants
 displayWidth=1200
 displayHeight=800
 WHITE=(255,255,255)
@@ -15,15 +15,17 @@ BLUE=(0,0,255)
 YELLOW=(255,255,0)
 ORANGE=(255,128,0)
 
-appDisplay=pygame.display.set_mode((displayWidth, displayHeight))
-pygame.display.set_caption("Ajapinu")
-clock=pygame.time.Clock()
-appDisplay.fill(WHITE)
 
-def displayTime(text):
-    text = str(text)
+#Displaying functions
+def displayTimer(solveTime):
+    """
+    Displays current solving time.
+    Args: solvetime
+    Returns: displays the solve time
+    """
+    solveTime = str(solveTime)
     timeFont = pygame.font.SysFont("Arial", 72)
-    textPicture = timeFont.render(text, False, BLACK, WHITE)
+    textPicture = timeFont.render(solveTime, False, BLACK, WHITE)
     appDisplay.blit(textPicture, (displayWidth/2-72, displayHeight/2-72))
 
 def displayScramble(scramble): #displays the current scramble on the screen
@@ -35,42 +37,48 @@ def displayScramble(scramble): #displays the current scramble on the screen
     scramblePicture = scrambleFont.render(text, False, BLACK, WHITE)
     appDisplay.blit(scramblePicture, (20,30))
 
-def displaySolveNumber(text):
-    text = "Solves: " + str(text)
-    solveNumberFont = pygame.font.SysFont("Arial", 30)
-    solveNumberPicture = solveNumberFont.render(text, False, BLACK, WHITE)
-    appDisplay.blit(solveNumberPicture, (900,30))
-
-def displayBest(text):
-    text = "Best:   " + str(text)
+def displayBest(bestTime):
+    """
+    Displays the best time in green colour.
+    Args: the best solving time
+    Returns: displays the best solving time
+    """
+    bestTime = "Best:   " + str(bestTime)
     bestFont = pygame.font.SysFont("Arial", 30)
-    bestPicture = bestFont.render(text, False, BLACK, WHITE)
+    bestPicture = bestFont.render(bestTime, False, GREEN, WHITE)
     appDisplay.blit(bestPicture, (900,60))
 
-def displayWorst(text):
-    text = "Worst: " + str(text)
+def displayWorst(worstTime):
+    """
+    Displays the worst time in red colour.
+    Args: the worst solving time
+    Returns: displays the worst solving time
+    """
+    worstTime = "Worst: " + str(worstTime)
     worstFont = pygame.font.SysFont("Arial", 30)
-    worstPicture = worstFont.render(text, False, BLACK, WHITE)
+    worstPicture = worstFont.render(worstTime, False, RED, WHITE)
     appDisplay.blit(worstPicture, (900,90))
 
-def displayMean(text):
-    text = "Mean: " + str(text)
-    meanFont = pygame.font.SysFont("Arial", 30)
-    meanPicture = meanFont.render(text, False, BLACK, WHITE)
-    appDisplay.blit(meanPicture, (900, 120))
+def displayUniversal(name, value, width, height):
+    """
+    A universal function for displaying various texts on the display.
     
-def displayAo5(text):
-    text = "Average of 5: " + str(text)
-    ao5Font = pygame.font.SysFont("Arial", 30)
-    ao5Picture = ao5Font.render(text, False, BLACK, WHITE)
-    appDisplay.blit(ao5Picture, (900, 150))
+    Args:
+    
+        name: the essence of what is going to be displayed, for example: mean, average
+        value: the numerical value to be displayed on the screen
+        width: number of pixels in width
+        height: number of pixels in height
+        
+    Returns: displays information in format name+value in its correct location
+    """
+    text = name + str(value)
+    universalFont = pygame.font.SysFont("Arial", 30)
+    universalPicture = universalFont.render(text, False, BLACK, WHITE)
+    appDisplay.blit(universalPicture, (width, height))
 
-def displayAo12(text):
-    text = "Average of 12: " + str(text)
-    ao12Font = pygame.font.SysFont("Arial", 30)
-    ao12Picture = ao12Font.render(text, False, BLACK, WHITE)
-    appDisplay.blit(ao12Picture, (900, 185))
 
+"""Modelling the cube"""
 def getColour(sticker): ##returns the color of the sticker being looked at    
     if sticker == "g":
         return GREEN
@@ -101,7 +109,7 @@ def drawCube(x,y,length):
     drawFace(x+length*3,y,length,up)
     drawFace(x+length*3,y+length*6,length,down)
     
-########### Following functions are for modelling the cube
+"""Following functions are for modelling the cube"""
 ##generates the 6 faces of a rubik's cube; all faces are represented by a 3x3 list of single character strings, which correspond to colours
 ##g-green;w-white;r-red;o-orange;y-yellow;b-blue
 def getCube():  
@@ -232,70 +240,111 @@ def scrambleCube(scramble):
 
 ############ modelling the cube ends here
 
-solveTime="0.00"
-displayTime(solveTime)
+"""Main program"""
 
-scramble = generate3x3Scramble(25)
+#Initializing and setting important variables
+pygame.init()
+appDisplay=pygame.display.set_mode((displayWidth, displayHeight))
+pygame.display.set_caption("Ajapinu")
+clock=pygame.time.Clock()
+appDisplay.fill(WHITE)
+
+
+#Displaying the timer
+solveTime="0.00"
+displayTimer(solveTime)
+
+#Displaying the scramble
+scramble = generate3x3Scramble(22)
 displayScramble(scramble)
 
+#Displaying the cube picture
 front,up,right,left,down,back = getCube()
 scrambleCube(scramble)
 drawCube(100,300,30)
 
-displaySolveNumber("")
+#Displaying statistics
+displayUniversal("Solves: ", "", 900, 30)
 displayBest("")
 displayWorst("")
-displayMean("")
+displayUniversal("Mean: ", "", 900, 120)
 
+#Initializing important variables
 timerRunning=False
 beginTime=0
-times=[]
 solves=0
+times=[]
 
+"""Main loop"""
 while True:
+    
+    #Update the display and set fps
+    pygame.display.update()
+    clock.tick(60)
+    
+    #Getting events
     for event in pygame.event.get():
+        
+        #Pressing the close button
         if event.type == pygame.QUIT:
             pygame.quit()
             quit()
+            
+        #Pressing any key    
         if event.type == pygame.KEYDOWN:
+            
+            #Starting the timer
             if event.key==pygame.K_SPACE and not timerRunning:
                 beginTime=time()
                 timerRunning=True
                 solves+=1
+                
+            #Stopping the timer    
             elif event.key==pygame.K_SPACE and timerRunning:
                 timerRunning=False
 
+    #Updating the solving time
     if timerRunning:
         solveTime="%.2f" % round(time()-beginTime, 2)
 
+    #The timer has been in use
     if not timerRunning and beginTime!=0:
+        
+        #If a new solve has been added
         if len(times)!=solves:
             appDisplay.fill(WHITE)
             times.append(float(solveTime))
-            
-            scramble = generate3x3Scramble(25)
+
+            #New scramble generation and displaying
+            scramble = generate3x3Scramble(22)
             displayScramble(scramble)
-            
+
+            #New cube picture displaying
             front,up,right,left,down,back = getCube()
             scrambleCube(scramble)
             drawCube(100,300,30)
 
-            displaySolveNumber(solves)
+            #Updating statistics values
+            displayUniversal("Solves: ", solves, 900, 30)
             displayBest(calculateBest(times))
             displayWorst(calculateWorst(times))
-            displayMean(calculateMean(times))
-
-            if len(times)>=5:
-                displayAo5(calculateAverage(times, solves-5, solves))
-            if len(times)>=12:
-                displayAo12(calculateAverage(times, solves-12, solves))
+            displayUniversal("Mean: ", calculateMean(times), 900, 120)
             
-    displayTime(solveTime)
+            if len(times)>=5:
+                displayUniversal("Average of 5: ", calculateAverage(times, solves-5, solves), 900, 150)
+                
+            if len(times)>=12:
+                displayUniversal("Average of 12: ", calculateAverage(times, solves-12, solves), 900, 185)
+                
+            displayUniversal("Times: ", "", 1000, 215)
 
-    pygame.display.update()
-    clock.tick(60)
-
-
-quit()
+            sliceList = times[-18:]
+            for timeIndex in range(len(sliceList)):
+                displayUniversal('', '%.2f' % sliceList[timeIndex], 1000, 245+30*timeIndex)
+                
+    #Display the current solving time
+    displayTimer(solveTime)
+    
 pygame.quit()
+quit()
    
