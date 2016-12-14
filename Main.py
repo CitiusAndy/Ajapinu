@@ -59,7 +59,7 @@ def displayWorst(worstTime):
     worstPicture = worstFont.render(worstTime, False, RED, WHITE)
     appDisplay.blit(worstPicture, (900,90))
 
-def displayUniversal(name, value, width, height):
+def displayUniversal(name, value, width, height, fontSize=30):
     """
     A universal function for displaying various texts on the display.
     
@@ -73,7 +73,7 @@ def displayUniversal(name, value, width, height):
     Returns: displays information in format name+value in its correct location
     """
     text = name + str(value)
-    universalFont = pygame.font.SysFont("Arial", 30)
+    universalFont = pygame.font.SysFont("Arial", fontSize)
     universalPicture = universalFont.render(text, False, BLACK, WHITE)
     appDisplay.blit(universalPicture, (width, height))
 
@@ -271,6 +271,8 @@ displayUniversal("Mean: ", "", 900, 120)
 
 #Initializing important variables
 timerRunning=False
+displayPreviousScramble=False
+previousScramble=""
 beginTime=0
 solves=0
 times=[]
@@ -303,22 +305,34 @@ while True:
             elif event.key==pygame.K_SPACE and timerRunning:
                 timerRunning=False
 
+            #For displaying previous scramble
+            if event.key==pygame.K_BACKSPACE and previousScramble != "":
+                displayPreviousScramble=True
+
     #Updating the solving time
     if timerRunning:
         solveTime="%.2f" % round(time()-beginTime, 2)
 
     #The timer has been in use
-    if not timerRunning and beginTime!=0:
+    if not timerRunning and beginTime != 0:
+        
+        #If backspace is pressed
+        if displayPreviousScramble:
+            displayUniversal("Previous scramble: ", " ".join(previousScramble), 20, 60, 25)
+            displayPreviousScramble=False
         
         #If a new solve has been added
-        if len(times)!=solves:
+        if len(times) != solves:
             appDisplay.fill(WHITE)
             times.append(float(solveTime))
 
             #New scramble generation and displaying
+            previousScramble = scramble
             scramble = generate3x3Scramble(22)
             displayScramble(scramble)
 
+
+            
             #New cube picture displaying
             front,up,right,left,down,back = getCube()
             scrambleCube(scramble)
